@@ -62,7 +62,7 @@
           <i class="fa-solid fa-bolt"></i>
           Instalații Electrice & Energie Verde
         </span>
-
+        <h1>
         <h1>
           Soluții Profesionale pentru
           <span>Instalații Electrice</span>
@@ -362,25 +362,29 @@
 
           <div class="info-item">
             <i class="fa-solid fa-phone"></i>
-            <span>Telefon: __________</span>
+            <span>Telefon: 0731 796 624</span>
           </div>
 
           <div class="info-item">
             <i class="fa-solid fa-envelope"></i>
-            <span>Email: __________</span>
+            <span>Email: contact@igbt.ro</span>
           </div>
 
           <div class="info-item">
             <i class="fa-solid fa-location-dot"></i>
-            <span>Adresă: __________</span>
+            <span>Adresă: Str. Bârzava, Nr. 20H, Ap. 1, Giroc, Cod 307220</span>
           </div>
         </div>
 
-        <form class="contact-form">
-          <input type="text" placeholder="Nume" required />
-          <input type="email" placeholder="Email" required />
-          <input type="tel" placeholder="Telefon" />
-          <textarea placeholder="Mesaj" required></textarea>
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/xojogdoe"
+          method="POST"
+        >
+          <input type="text" name="nume" placeholder="Nume" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="tel" name="telefon" placeholder="Telefon" />
+          <textarea name="mesaj" placeholder="Mesaj" required></textarea>
           <button type="submit">Trimite Mesaj</button>
         </form>
       </div>
@@ -388,15 +392,20 @@
 
     <section class="map">
       <iframe
-        src="https://www.google.com/maps?q=Bucuresti&output=embed"
+        src="https://maps.google.com/maps?q=Strada%20B%C3%A2rzava%2020H,%20Giarmata-Vii%20307220&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        width="100%"
+        height="450"
+        style="border: 0"
+        allowfullscreen=""
         loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
       ></iframe>
     </section>
 
     <footer>
       <div class="container footer-grid">
         <div>
-          <img src="images/logo-nou.png.png" class="footer-logo" alt="IGBT" />
+          <img src="images/logo-nou.png" class="footer-logo" alt="IGBT" />
           <p>
             Soluții profesionale pentru instalații electrice și sisteme
             fotovoltaice.

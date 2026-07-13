@@ -846,3 +846,8 @@ footer li {
     }
 }
 }
+/* Culoare roșie specială pentru cuvintele cheie din titlu */
+.hero h1 .highlight {
+    color: #E63946; /* Un roșu intens, foarte vizibil pe fundalul site-ului */
+    display: inline-block;
+}
