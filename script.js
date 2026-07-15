@@ -61,14 +61,13 @@ const startCounters = () => {
 };
 
 // ACTIVARE AUTOMATĂ A CONTOARELOR LA SCROLL
-// Folosim un observer dedicat pentru a porni numărătoarea doar când secțiunea e vizibilă
 const statsSection = document.querySelector(".stats");
 if (statsSection) {
     const statsObserver = new IntersectionObserver((entries, observerInstance) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 startCounters();
-                observerInstance.unobserve(entry.target); // Oprim observarea ca să nu repete numărătoarea de fiecare dată
+                observerInstance.unobserve(entry.target); 
             }
         });
     }, { threshold: 0.1 });
@@ -143,4 +142,64 @@ window.addEventListener("scroll", () => {
             item.classList.add("active");
         }
     });
+});
+
+// -------------------------------------------
+// Sistem de „Încarcă mai multe” (Varianta Corectată & Sigură)
+// -------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const projectGrid = document.querySelector(".projects-grid");
+    
+    if (loadMoreBtn && projectGrid) {
+        // Obținem toate elementele direct din grila de proiecte
+        const allProjects = Array.from(projectGrid.children);
+        
+        // Dacă în grilă sunt mai puțin de sau fix 6 poze, ascundem butonul de tot
+        if (allProjects.length <= 6) {
+            loadMoreBtn.style.display = "none";
+            return;
+        }
+
+        // Ascundem automat la început tot ce depășește primele 6 imagini
+        allProjects.forEach((proj, index) => {
+            if (index >= 6) {
+                proj.style.display = "none";
+            }
+        });
+
+        let isExpanded = false;
+
+        loadMoreBtn.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevenim orice comportament ciudat de reîncărcare a paginii
+            
+            if (!isExpanded) {
+                // Afișăm toate pozele din grilă
+                allProjects.forEach(proj => {
+                    proj.style.display = "block";
+                    proj.style.opacity = "1";
+                    proj.style.transform = "translateY(0)";
+                });
+                
+                loadMoreBtn.innerText = "Ascunde proiectele";
+                isExpanded = true;
+            } else {
+                // Ascundem din nou pozele care depășesc numărul de 6
+                allProjects.forEach((proj, index) => {
+                    if (index >= 6) {
+                        proj.style.display = "none";
+                    }
+                });
+                
+                // Trimiterea lină a ecranului înapoi sus la secțiunea proiecte
+                const projectsSection = document.getElementById("proiecte");
+                if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: "smooth" });
+                }
+                
+                loadMoreBtn.innerText = "Vezi mai multe proiecte";
+                isExpanded = false;
+            }
+        });
+    }
 });

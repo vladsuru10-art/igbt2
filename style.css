@@ -851,3 +851,76 @@ footer li {
     color: #E63946; /* Un roșu intens, foarte vizibil pe fundalul site-ului */
     display: inline-block;
 }
+/* ==========================================
+   STILIZARE EXPERIENȚĂ PORTOFOLIU (40 POZE) & WHATSAPP
+========================================== */
+
+/* Inițial, ascundem pozele din portofoliu care au clasa hidden-project */
+.hidden-project {
+    display: none !important;
+}
+
+/* Container pentru butonul din portofoliu */
+.portfolio-btn-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+#loadMoreBtn {
+    border: none;
+    cursor: pointer;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: .3s ease-in-out;
+}
+
+/* Stilizare pentru cuvintele evidențiate cu roșu modern */
+.hero h1 .highlight {
+    color: #E63946; /* Roșu aprins de tip electric/crimson */
+    display: inline-block;
+}
+
+/* Butonul plutitor de WhatsApp */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 95px; /* Pus deasupra butonului Back to Top pentru a nu se suprapune */
+    right: 25px;
+    background-color: #25D366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 35px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    background-color: #128C7E;
+}
+
+.whatsapp-float i {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ajustare pentru telefoane mobile */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+        bottom: 85px;
+        right: 20px;
+    }
+}
