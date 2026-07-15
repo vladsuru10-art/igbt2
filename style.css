@@ -1,4 +1,3 @@
-
 /* ==========================================
    IGBT WEBSITE - CSS COMPLET & OPTIMIZAT
 ========================================== */
@@ -802,8 +801,10 @@ footer li {
     .contact-info h2 {
         font-size: 34px;
     }
-    /* ==========================================
-   RESPONSIVE DESIGN (REPARAT)
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN ADIȚIONAL & REPARAT
 ========================================== */
 @media (max-width: 1024px) {
     .about .container,
@@ -845,15 +846,16 @@ footer li {
         grid-template-columns: 1fr;
     }
 }
-}
-/* Culoare roșie specială pentru cuvintele cheie din titlu */
-.hero h1 .highlight {
-    color: #E63946; /* Un roșu intens, foarte vizibil pe fundalul site-ului */
-    display: inline-block;
-}
+
 /* ==========================================
    STILIZARE EXPERIENȚĂ PORTOFOLIU (40 POZE) & WHATSAPP
 ========================================== */
+
+/* Culoare roșie blândă (Vișiniu elegant) pentru cuvintele cheie din titlu */
+.hero h1 .highlight {
+    color: #9B3B4B; /* Nuanță caldă de vișiniu/burgundy catifelat */
+    display: inline-block;
+}
 
 /* Inițial, ascundem pozele din portofoliu care au clasa hidden-project */
 .hidden-project {
@@ -875,12 +877,6 @@ footer li {
     font-size: 16px;
     font-weight: 600;
     transition: .3s ease-in-out;
-}
-
-/* Stilizare pentru cuvintele evidențiate cu roșu modern */
-.hero h1 .highlight {
-    color: #E63946; /* Roșu aprins de tip electric/crimson */
-    display: inline-block;
 }
 
 /* Butonul plutitor de WhatsApp */
