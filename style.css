@@ -108,12 +108,12 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    width: 220px; /* Controlează dimensiunea logoului de aici */
+    width: 220px;
 }
 
 .logo img {
-    width: 100%; /* Forțează imaginea să ocupe cei 220px ai părintelui */
-    height: auto; /* Păstrează proporțiile perfecte, fără să fie turtită */
+    width: 100%;
+    height: auto;
     object-fit: contain;
     transition: .3s;
 }
@@ -504,37 +504,6 @@ header {
 }
 
 /* ==========================================
-   PARTNERS SECTION
-========================================== */
-.partners {
-    background: #fff;
-}
-
-.partners-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 25px;
-    align-items: center;
-}
-
-.partner {
-    background: #fff;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: var(--shadow);
-    transition: .3s;
-}
-
-.partner:hover {
-    transform: translateY(-8px);
-}
-
-.partner img {
-    height: 60px;
-    object-fit: contain;
-}
-
-/* ==========================================
    CONTACT SECTION
 ========================================== */
 .contact {
@@ -715,10 +684,8 @@ footer li {
 }
 
 /* ==========================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE MEDIA QUERIES & ALIGNMENT
 ========================================== */
-
-/* Tablete și ecrane medii (max-width: 1100px) */
 @media(max-width: 1100px) {
     .about .container,
     .contact-wrapper {
@@ -733,16 +700,11 @@ footer li {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .partners-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
     .footer-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* Telefoane mobile și ecran mic (max-width: 768px) */
 @media(max-width: 768px) {
     .menu-btn {
         display: block;
@@ -752,7 +714,6 @@ footer li {
         display: none;
     }
 
-    /* Meniul Mobil când este deschis cu JS */
     .nav-links.active {
         display: flex;
         position: absolute;
@@ -792,8 +753,7 @@ footer li {
     .projects-grid,
     .why-grid,
     .process-grid,
-    .stats .container,
-    .partners-grid {
+    .stats .container {
         grid-template-columns: 1fr;
     }
 
@@ -803,66 +763,11 @@ footer li {
     }
 }
 
-/* ==========================================
-   RESPONSIVE DESIGN ADIȚIONAL & REPARAT
-========================================== */
-@media (max-width: 1024px) {
-    .about .container,
-    .contact-wrapper {
-        grid-template-columns: 1fr;
-        gap: 50px;
-    }
-    .services-grid,
-    .projects-grid,
-    .why-grid,
-    .process-grid,
-    .stats .container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .footer-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .menu-btn {
-        display: block;
-    }
-    .nav-links {
-        display: none;
-    }
-    .btn-navbar {
-        display: none;
-    }
-    .hero h1 {
-        font-size: 36px;
-    }
-    .services-grid,
-    .projects-grid,
-    .why-grid,
-    .process-grid,
-    .stats .container,
-    .partners-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ==========================================
-   STILIZARE EXPERIENȚĂ PORTOFOLIU (40 POZE) & WHATSAPP
-========================================== */
-
-/* Culoare roșie blândă (Vișiniu elegant) pentru cuvintele cheie din titlu */
 .hero h1 .highlight {
-    color: #9B3B4B; /* Nuanță caldă de vișiniu/burgundy catifelat */
+    color: #9B3B4B;
     display: inline-block;
 }
 
-/* Inițial, ascundem pozele din portofoliu care au clasa hidden-project */
-.hidden-project {
-    display: none !important;
-}
-
-/* Container pentru butonul din portofoliu */
 .portfolio-btn-container {
     margin-top: 40px;
     display: flex;
@@ -879,12 +784,11 @@ footer li {
     transition: .3s ease-in-out;
 }
 
-/* Butonul plutitor de WhatsApp */
 .whatsapp-float {
     position: fixed;
     width: 60px;
     height: 60px;
-    bottom: 95px; /* Pus deasupra butonului Back to Top pentru a nu se suprapune */
+    bottom: 95px;
     right: 25px;
     background-color: #25D366;
     color: #FFF;
@@ -897,7 +801,6 @@ footer li {
     align-items: center;
     justify-content: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    text-decoration: none;
 }
 
 .whatsapp-float:hover {
@@ -905,12 +808,6 @@ footer li {
     background-color: #128C7E;
 }
 
-.whatsapp-float i {
-    margin: 0;
-    padding: 0;
-}
-
-/* Ajustare pentru telefoane mobile */
 @media (max-width: 768px) {
     .whatsapp-float {
         width: 50px;
@@ -918,5 +815,198 @@ footer li {
         font-size: 28px;
         bottom: 85px;
         right: 20px;
+    }
+}
+
+/* ==========================================
+   FILTRARE PORTOFOLIU (TABS) & LINKS
+========================================== */
+#proiect-instalatie,
+#proiect-fotovoltaic {
+    scroll-margin-top: 130px;
+}
+
+.about-right p .about-link {
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease, filter 0.3s ease;
+}
+
+.about-right p .highlight-electric {
+    color: var(--primary);
+}
+
+.about-right p .highlight-solar {
+    color: var(--secondary);
+}
+
+.about-right p .about-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -1px;
+    left: 0;
+    background-color: currentColor;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.about-right p .about-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.about-right p .about-link:hover {
+    filter: brightness(1.15);
+}
+
+.portfolio-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: white;
+    color: var(--dark);
+    border: 2px solid #edf2f7;
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.filter-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+/* ==========================================
+   STILIZARE SECȚIUNI DETALIATE SERVICII
+========================================== */
+.services-grid a.service-card {
+    color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+}
+
+.service-detail-link {
+    margin-top: 20px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: .3s ease-in-out;
+}
+
+.service-card:hover .service-detail-link {
+    color: var(--primary-dark);
+    gap: 10px;
+}
+
+.service-detail-section {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.service-detail-section.alt-bg {
+    background: var(--light);
+}
+
+.service-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.service-detail-img img {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    height: 420px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.service-detail-img img:hover {
+    transform: scale(1.02);
+}
+
+.service-detail-content h2 {
+    font-size: 38px;
+    margin: 15px 0 25px;
+    color: var(--dark);
+}
+
+.service-detail-content p {
+    color: var(--gray);
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.service-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.service-detail-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.service-detail-list li i {
+    color: var(--primary);
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+/* Responsivitate ecrane medii (Tablete) */
+@media (max-width: 992px) {
+    .service-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+    
+    /* Forțează imaginea să rămână mereu deasupra textului pe ecrane mici în cazul secțiunilor alternante */
+    .service-detail-grid.image-left {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .service-detail-content h2 {
+        font-size: 32px;
+    }
+    
+    .service-detail-img img {
+        height: 320px;
     }
 }

@@ -12,7 +12,6 @@ menuBtn.addEventListener("click", () => {
     navLinks.classList.toggle("active");
 });
 
-// Închide meniul automat când se dă click pe un link (pentru mobil)
 document.querySelectorAll(".nav-links a").forEach(link => {
     link.addEventListener("click", () => {
         navLinks.classList.remove("active");
@@ -43,7 +42,7 @@ const startCounters = () => {
     counters.forEach(counter => {
         const target = +counter.dataset.target;
         let count = 0;
-        const speed = target / 100; // Viteza de numărare
+        const speed = target / 100;
 
         const updateCount = () => {
             if (count < target) {
@@ -60,7 +59,6 @@ const startCounters = () => {
     });
 };
 
-// ACTIVARE AUTOMATĂ A CONTOARELOR LA SCROLL
 const statsSection = document.querySelector(".stats");
 if (statsSection) {
     const statsObserver = new IntersectionObserver((entries, observerInstance) => {
@@ -96,7 +94,7 @@ topBtn.addEventListener("click", () => {
 });
 
 // -------------------------------------------
-// Scroll Reveal (Animații la Scroll pentru elemente)
+// Scroll Reveal (Animații ușoare la scroll)
 // -------------------------------------------
 const hiddenElements = document.querySelectorAll(
     ".service-card, .project-card, .why-card, .step, .stat"
@@ -144,62 +142,84 @@ window.addEventListener("scroll", () => {
     });
 });
 
-// -------------------------------------------
-// Sistem de „Încarcă mai multe” (Varianta Corectată & Sigură)
-// -------------------------------------------
+// --------------------------------------------------------------------------
+// Sistem Avansat de Filtrare Portofoliu (DOUĂ CATEGORII) + Load More
+// --------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const loadMoreBtn = document.getElementById("loadMoreBtn");
     const projectGrid = document.querySelector(".projects-grid");
+    const filterBtns = document.querySelectorAll(".filter-btn");
     
-    if (loadMoreBtn && projectGrid) {
-        // Obținem toate elementele direct din grila de proiecte
+    if (projectGrid) {
         const allProjects = Array.from(projectGrid.children);
-        
-        // Dacă în grilă sunt mai puțin de sau fix 6 poze, ascundem butonul de tot
-        if (allProjects.length <= 6) {
-            loadMoreBtn.style.display = "none";
-            return;
-        }
-
-        // Ascundem automat la început tot ce depășește primele 6 imagini
-        allProjects.forEach((proj, index) => {
-            if (index >= 6) {
-                proj.style.display = "none";
-            }
-        });
-
+        let currentFilter = "all";
         let isExpanded = false;
 
-        loadMoreBtn.addEventListener("click", (e) => {
-            e.preventDefault(); // Prevenim orice comportament ciudat de reîncărcare a paginii
+        const applyFilterAndLimit = () => {
+            let visibleCount = 0;
             
-            if (!isExpanded) {
-                // Afișăm toate pozele din grilă
-                allProjects.forEach(proj => {
-                    proj.style.display = "block";
-                    proj.style.opacity = "1";
-                    proj.style.transform = "translateY(0)";
-                });
+            allProjects.forEach((proj) => {
+                const cat = proj.getAttribute("data-category");
                 
-                loadMoreBtn.innerText = "Ascunde proiectele";
-                isExpanded = true;
-            } else {
-                // Ascundem din nou pozele care depășesc numărul de 6
-                allProjects.forEach((proj, index) => {
-                    if (index >= 6) {
+                if (currentFilter === "all") {
+                    if (isExpanded || visibleCount < 6) {
+                        proj.style.display = "block";
+                        visibleCount++;
+                    } else {
                         proj.style.display = "none";
                     }
-                });
-                
-                // Trimiterea lină a ecranului înapoi sus la secțiunea proiecte
-                const projectsSection = document.getElementById("proiecte");
-                if (projectsSection) {
-                    projectsSection.scrollIntoView({ behavior: "smooth" });
+                } else {
+                    if (cat === currentFilter) {
+                        proj.style.display = "block";
+                    } else {
+                        proj.style.display = "none";
+                    }
                 }
-                
-                loadMoreBtn.innerText = "Vezi mai multe proiecte";
-                isExpanded = false;
+            });
+
+            if (currentFilter === "all") {
+                loadMoreBtn.style.display = "block";
+                loadMoreBtn.innerText = isExpanded ? "Ascunde proiectele" : "Vezi mai multe proiecte";
+            } else {
+                loadMoreBtn.style.display = "none";
             }
+        };
+
+        applyFilterAndLimit();
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentFilter = btn.getAttribute("data-filter");
+                applyFilterAndLimit();
+            });
+        });
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                isExpanded = !isExpanded;
+                applyFilterAndLimit();
+                
+                if (!isExpanded) {
+                    const projectsSection = document.getElementById("proiecte");
+                    if (projectsSection) projectsSection.scrollIntoView({ behavior: "smooth" });
+                }
+            });
+        }
+
+        document.querySelectorAll(".about-link").forEach(link => {
+            link.addEventListener("click", () => {
+                const href = link.getAttribute("href");
+                if (href === "#proiect-instalatie") {
+                    const targetBtn = document.querySelector('.filter-btn[data-filter="electric"]');
+                    if (targetBtn) targetBtn.click();
+                } else if (href === "#proiect-fotovoltaic") {
+                    const targetBtn = document.querySelector('.filter-btn[data-filter="solar"]');
+                    if (targetBtn) targetBtn.click();
+                }
+            });
         });
     }
 });
