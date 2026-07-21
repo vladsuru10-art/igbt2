@@ -1010,3 +1010,106 @@ footer li {
         height: 320px;
     }
 }
+/* ==========================================
+   STILIZARE POZE ECHIPĂ & FONDATORI (LAT)
+========================================== */
+.about-team-photos {
+    grid-column: 1 / -1; /* Ocupă 100% din lățimea secțiunii Despre Noi */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 coloane egale pe lățime */
+    gap: 25px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.about-team-photos .photo-wrapper {
+    width: 100%;
+    height: 220px; /* Înălțime mai mică pentru un aspect panoramic/lat */
+    border-radius: var(--radius, 18px);
+    overflow: hidden;
+    box-shadow: var(--shadow, 0 15px 40px rgba(0,0,0,.08));
+    transition: transform 0.3s ease;
+}
+
+.about-team-photos .photo-wrapper:hover {
+    transform: translateY(-5px);
+}
+
+.about-team-photos .photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Încadrează imaginea fără să o deformeze */
+}
+
+/* Adaptare pe mobil (pe telefoane vin una sub alta) */
+@media (max-width: 768px) {
+    .about-team-photos {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    
+    .about-team-photos .photo-wrapper {
+        height: 200px;
+    }
+}
+/* ==========================================
+   LIGHTBOX / POP-UP FULLSCREEN PENTRU IMAGINI
+========================================== */
+img {
+    cursor: pointer; /* Schimbă cursorul în lupă/deget când treci peste imagini */
+}
+
+.lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.88); /* Fundal negru semitransparent */
+    backdrop-filter: blur(5px); /* Efect modern de blur în spate */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-modal img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: var(--radius, 12px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    cursor: default;
+}
+
+.lightbox-modal.active img {
+    transform: scale(1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+    color: var(--primary, #ffb703);
+    transform: scale(1.1);
+}

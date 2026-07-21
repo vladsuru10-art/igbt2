@@ -223,3 +223,52 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+// ==========================================
+// LIGHTBOX FULLSCREEN AUTOMAT PENTRU IMAGINI
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Creăm fereastra modală direct în memorie și o adăugăm în pagină
+    const modal = document.createElement("div");
+    modal.classList.add("lightbox-modal");
+    modal.innerHTML = `
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Imagine marita">
+    `;
+    document.body.appendChild(modal);
+
+    const modalImg = modal.querySelector("img");
+    const closeBtn = modal.querySelector(".lightbox-close");
+
+    // 2. Selectăm toate pozele din pagină
+    const allImages = document.querySelectorAll("img");
+
+    allImages.forEach(img => {
+        // Ignorăm logo-ul sau eventuale pictograme mici dacă este cazul
+        if (img.closest(".logo") || img.classList.contains("no-lightbox")) return;
+
+        img.addEventListener("click", () => {
+            modalImg.src = img.src;
+            modalImg.alt = img.alt || "Imagine";
+            modal.classList.add("active");
+        });
+    });
+
+    // 3. Închidere la click pe butonul X
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    // 4. Închidere la click oriunde pe fundalul negru din afara pozei
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+
+    // 5. Închidere la apăsarea tastei ESC
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+            modal.classList.remove("active");
+        }
+    });
+});
