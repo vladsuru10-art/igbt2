@@ -224,51 +224,103 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 // ==========================================
-// LIGHTBOX FULLSCREEN AUTOMAT PENTRU IMAGINI
+// LIGHTBOX FULLSCREEN DEFINITIV (DELEGARE GLOBALĂ)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Creăm fereastra modală direct în memorie și o adăugăm în pagină
-    const modal = document.createElement("div");
-    modal.classList.add("lightbox-modal");
-    modal.innerHTML = `
-        <span class="lightbox-close">&times;</span>
-        <img src="" alt="Imagine marita">
-    `;
-    document.body.appendChild(modal);
+    // 1. Creăm fereastra modală dacă nu există
+    if (!document.querySelector(".lightbox-modal")) {
+        const modal = document.createElement("div");
+        modal.classList.add("lightbox-modal");
+        modal.innerHTML = `
+            <span class="lightbox-close">&times;</span>
+            <button class="lightbox-btn lightbox-prev">&#10094;</button>
+            <img src="" alt="Imagine marita">
+            <button class="lightbox-btn lightbox-next">&#10095;</button>
+        `;
+        document.body.appendChild(modal);
+    }
 
+    const modal = document.querySelector(".lightbox-modal");
     const modalImg = modal.querySelector("img");
     const closeBtn = modal.querySelector(".lightbox-close");
+    const prevBtn = modal.querySelector(".lightbox-prev");
+    const nextBtn = modal.querySelector(".lightbox-next");
 
-    // 2. Selectăm toate pozele din pagină
-    const allImages = document.querySelectorAll("img");
+    let currentImages = [];
+    let currentIndex = 0;
 
-    allImages.forEach(img => {
-        // Ignorăm logo-ul sau eventuale pictograme mici dacă este cazul
-        if (img.closest(".logo") || img.classList.contains("no-lightbox")) return;
-
-        img.addEventListener("click", () => {
-            modalImg.src = img.src;
-            modalImg.alt = img.alt || "Imagine";
-            modal.classList.add("active");
+    // Colectează doar imaginile VIZIBILE din pagină (ia în calcul filtrele de proiecte)
+    function getVisibleImages() {
+        const allImgs = Array.from(document.querySelectorAll("img"));
+        return allImgs.filter(img => {
+            const isLogo = img.closest(".logo") || img.classList.contains("no-lightbox");
+            // Verificăm dacă imaginea nu este ascunsă prin CSS/Filtru
+            const isVisible = img.offsetWidth > 0 && img.offsetHeight > 0;
+            return img.src && !isLogo && isVisible;
         });
+    }
+
+    function openLightboxWithSrc(src) {
+        const visibleImgs = getVisibleImages();
+        currentImages = visibleImgs.map(img => img.src);
+        currentIndex = currentImages.indexOf(src);
+
+        if (currentIndex === -1) {
+            currentImages = [src];
+            currentIndex = 0;
+        }
+
+        modalImg.src = src;
+        modal.classList.add("active");
+    }
+
+    // 2. DELEGARE GLOBALĂ: Prinde click-ul oriunde în pagină
+    document.addEventListener("click", (e) => {
+        // Dacă e click în interiorul lightbox-ului deschis, nu facem nimic
+        if (e.target.closest(".lightbox-modal")) return;
+
+        // Cazul A: Click pe o imagine <img>
+        if (e.target.tagName === "IMG") {
+            if (e.target.closest(".logo") || e.target.classList.contains("no-lightbox")) return;
+            openLightboxWithSrc(e.target.src);
+            return;
+        }
+
+        // Cazul B: Click pe un card de proiect (.project-card) sau pe un element din el
+        const projectCard = e.target.closest(".project-card, .photo-wrapper");
+        if (projectCard) {
+            const img = projectCard.querySelector("img");
+            if (img && img.src) {
+                openLightboxWithSrc(img.src);
+            }
+        }
     });
 
-    // 3. Închidere la click pe butonul X
-    closeBtn.addEventListener("click", () => {
-        modal.classList.remove("active");
+    // 3. Controale Navigare și Închidere
+    prevBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (currentImages.length <= 1) return;
+        currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+        modalImg.src = currentImages[currentIndex];
     });
 
-    // 4. Închidere la click oriunde pe fundalul negru din afara pozei
+    nextBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (currentImages.length <= 1) return;
+        currentIndex = (currentIndex + 1) % currentImages.length;
+        modalImg.src = currentImages[currentIndex];
+    });
+
+    closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+
     modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.remove("active");
-        }
+        if (e.target === modal) modal.classList.remove("active");
     });
 
-    // 5. Închidere la apăsarea tastei ESC
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("active")) {
-            modal.classList.remove("active");
-        }
+        if (!modal.classList.contains("active")) return;
+        if (e.key === "Escape") modal.classList.remove("active");
+        if (e.key === "ArrowLeft") prevBtn.click();
+        if (e.key === "ArrowRight") nextBtn.click();
     });
 });
