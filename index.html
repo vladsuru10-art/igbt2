@@ -31,7 +31,8 @@
 
   <body>
     <!-- Container ascuns pentru Google Translate -->
-<div id="google_translate_element" style="display: none;"></div>
+<!-- Container ascuns prin poziționare (NU prin display:none) -->
+<div id="google_translate_element" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;"></div>
     <!-- HEADER / NAVBAR -->
     <!-- HEADER / NAVBAR -->
 <header id="header">
@@ -49,18 +50,17 @@
         <li><a href="#contact">Contact</a></li>
         
         <!-- SELECTOR LIMBĂ INTEGRAT CURAT ÎN MENIU -->
-        <li class="nav-lang-item">
-          <button class="lang-btn active" title="Română">
-            <img src="https://flagcdn.com/w40/ro.png" alt="RO" />
-            <span>RO</span>
-          </button>
-          <span class="lang-slash">/</span>
-          <button class="lang-btn" title="English">
-            <img src="https://flagcdn.com/w40/gb.png" alt="EN" />
-            <span>EN</span>
-          </button>
-        </li>
-      </ul>
+<li class="nav-lang-item">
+  <button class="lang-btn active" data-lang="ro" title="Română">
+    <img src="https://flagcdn.com/w40/ro.png" alt="RO" />
+    <span>RO</span>
+  </button>
+  <span class="lang-slash">/</span>
+  <button class="lang-btn" data-lang="en" title="English">
+    <img src="https://flagcdn.com/w40/gb.png" alt="EN" />
+    <span>EN</span>
+  </button>
+</li>
     </nav>
 
     <a href="#contact" class="btn-navbar"> Solicită Ofertă </a>
@@ -1057,10 +1057,11 @@
 
     <script src="script.js"></script>
     <!-- Scriptul oficial Google Translate -->
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- Scriptul Google Translate cu HTTPS explicit -->
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
-  // Initializare Google Translate în fundal
+  // Initializare Google Translate
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'ro',
@@ -1070,44 +1071,50 @@
     }, 'google_translate_element');
   }
 
-  // Funcție care declanșează traducerea Google din butoanele noastre
-  function changeLanguage(langCode) {
-    const translateCombo = document.querySelector('.goog-te-combo');
-    if (translateCombo) {
-      translateCombo.value = langCode;
-      // Declanșează evenimentul de schimbare pe dropdown-ul ascuns Google
-      translateCombo.dispatchEvent(new Event('change'));
+  // Funcție pentru setarea/ștergerea cookie-ului Google Translate
+  function setLanguageCookie(langCode) {
+    if (langCode === 'ro') {
+      // Pentru limba originală (Română), ștergem cookie-ul Google Translate
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+    } else {
+      // Pentru Engleză, setăm cookie-ul la /ro/en
+      const cookieVal = "/ro/" + langCode;
+      document.cookie = "googtrans=" + cookieVal + "; path=/;";
+      document.cookie = "googtrans=" + cookieVal + "; domain=" + window.location.hostname + "; path=/;";
     }
   }
 
-  // Conectare evenimente de click pe butoanele din navbar
   document.addEventListener('DOMContentLoaded', () => {
     const langButtons = document.querySelectorAll('.lang-btn');
 
+    // Verificăm dacă există deja un cookie setat pentru a activa butonul corespunzător la încărcare
+    const cookies = document.cookie.split(';');
+    let currentLang = 'ro';
+    cookies.forEach(c => {
+      if (c.trim().startsWith('googtrans=')) {
+        if (c.includes('/en')) currentLang = 'en';
+      }
+    });
+
+    // Setează vizual butonul activ la încărcare
+    langButtons.forEach(btn => {
+      if (btn.getAttribute('data-lang') === currentLang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Ascultă click-urile pe butoane
     langButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        
-        // Actualizează starea vizuală a butoanelor
-        langButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // Preia codul limbii (ro sau en)
         const selectedLang = btn.getAttribute('data-lang');
 
-        // Dacă se dorește revenirea la română (limba originală)
-        if (selectedLang === 'ro') {
-          // Resetăm traducerea Google
-          const iframe = document.querySelector('iframe.goog-te-banner-frame');
-          if (iframe) {
-            const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-            const restoreBtn = innerDoc.querySelector('.goog-close-link') || innerDoc.querySelector('button');
-            if (restoreBtn) restoreBtn.click();
-          }
-          changeLanguage('ro');
-        } else {
-          changeLanguage(selectedLang);
-        }
+        // Setează noul cookie și reîncarcă pagina pentru a aplica traducerea
+        setLanguageCookie(selectedLang);
+        window.location.reload();
       });
     });
   });
