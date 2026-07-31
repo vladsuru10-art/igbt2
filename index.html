@@ -30,30 +30,46 @@
   </head>
 
   <body>
+    <!-- Container ascuns pentru Google Translate -->
+<div id="google_translate_element" style="display: none;"></div>
     <!-- HEADER / NAVBAR -->
-    <header id="header">
-      <div class="container navbar">
-        <a href="#home" class="logo">
-          <img src="images/logo-nou.png" alt="IGBT Logo" />
-        </a>
+    <!-- HEADER / NAVBAR -->
+<header id="header">
+  <div class="container navbar">
+    <a href="#home" class="logo">
+      <img src="images/logo-nou.png" alt="IGBT Logo" />
+    </a>
 
-        <nav>
-          <ul class="nav-links">
-            <li><a href="#home">Acasă</a></li>
-            <li><a href="#despre">Despre</a></li>
-            <li><a href="#servicii">Servicii</a></li>
-            <li><a href="#proiecte">Proiecte</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </nav>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#home">Acasă</a></li>
+        <li><a href="#despre">Despre</a></li>
+        <li><a href="#servicii">Servicii</a></li>
+        <li><a href="#proiecte">Proiecte</a></li>
+        <li><a href="#contact">Contact</a></li>
+        
+        <!-- SELECTOR LIMBĂ INTEGRAT CURAT ÎN MENIU -->
+        <li class="nav-lang-item">
+          <button class="lang-btn active" title="Română">
+            <img src="https://flagcdn.com/w40/ro.png" alt="RO" />
+            <span>RO</span>
+          </button>
+          <span class="lang-slash">/</span>
+          <button class="lang-btn" title="English">
+            <img src="https://flagcdn.com/w40/gb.png" alt="EN" />
+            <span>EN</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
 
-        <a href="#contact" class="btn-navbar"> Solicită Ofertă </a>
+    <a href="#contact" class="btn-navbar"> Solicită Ofertă </a>
 
-        <div class="menu-btn">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-      </div>
-    </header>
+    <div class="menu-btn">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+  </div>
+</header>
 
     <!-- HERO SECTION -->
     <section id="home" class="hero">
@@ -955,7 +971,7 @@
           <div class="info-item">
             <i class="fa-solid fa-location-dot"></i>
             <span
-              >Adresă: Str. Bârzava, Nr. 20H, Ap. 1, Giarmata-Vii, Cod
+              >Adresă: Str. Bârzava, Nr. 20H, Ap. 1, Giroc, Cod
               307220</span
             >
           </div>
@@ -1040,5 +1056,61 @@
     </a>
 
     <script src="script.js"></script>
+    <!-- Scriptul oficial Google Translate -->
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+  // Initializare Google Translate în fundal
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ro',
+      includedLanguages: 'ro,en',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+
+  // Funcție care declanșează traducerea Google din butoanele noastre
+  function changeLanguage(langCode) {
+    const translateCombo = document.querySelector('.goog-te-combo');
+    if (translateCombo) {
+      translateCombo.value = langCode;
+      // Declanșează evenimentul de schimbare pe dropdown-ul ascuns Google
+      translateCombo.dispatchEvent(new Event('change'));
+    }
+  }
+
+  // Conectare evenimente de click pe butoanele din navbar
+  document.addEventListener('DOMContentLoaded', () => {
+    const langButtons = document.querySelectorAll('.lang-btn');
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Actualizează starea vizuală a butoanelor
+        langButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Preia codul limbii (ro sau en)
+        const selectedLang = btn.getAttribute('data-lang');
+
+        // Dacă se dorește revenirea la română (limba originală)
+        if (selectedLang === 'ro') {
+          // Resetăm traducerea Google
+          const iframe = document.querySelector('iframe.goog-te-banner-frame');
+          if (iframe) {
+            const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const restoreBtn = innerDoc.querySelector('.goog-close-link') || innerDoc.querySelector('button');
+            if (restoreBtn) restoreBtn.click();
+          }
+          changeLanguage('ro');
+        } else {
+          changeLanguage(selectedLang);
+        }
+      });
+    });
+  });
+</script>
   </body>
 </html>

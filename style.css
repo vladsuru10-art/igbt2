@@ -1113,3 +1113,88 @@ img {
     color: var(--primary, #ffb703);
     transform: scale(1.1);
 }
+/* ==========================================
+   STILIZARE & ALINIERE PERFECTĂ SELECTOR LIMBĂ
+========================================== */
+.nav-links {
+    align-items: center; /* Aliniază toate elementele din meniu pe mijloc pe verticală */
+}
+
+.nav-lang-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 10px;
+    padding-left: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1); /* Separator subtil între Contact și Limbă */
+}
+
+.nav-lang-item .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark, #0F172A);
+    padding: 2px 4px;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    outline: none;
+}
+
+.nav-lang-item .lang-btn img {
+    width: 18px;
+    height: 12px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.nav-lang-item .lang-btn span {
+    line-height: 1;
+}
+
+.nav-lang-item .lang-btn:hover {
+    color: var(--primary, #0D6EFD);
+}
+
+.nav-lang-item .lang-btn.active {
+    color: var(--primary, #0D6EFD);
+    font-weight: 700;
+}
+
+.nav-lang-item .lang-slash {
+    color: #cbd5e1;
+    font-size: 13px;
+    user-select: none;
+}
+
+/* Adaptare pentru meniul de Mobil */
+@media (max-width: 768px) {
+    .nav-lang-item {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        padding-top: 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        justify-content: center;
+    }
+}
+/* Ascunde bara și notificările automate Google Translate */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+body {
+    top: 0px !important;
+}
+
+/* Ascunde evidențierea la hover a cuvintelor traduse */
+.goog-text-highlight {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
