@@ -668,7 +668,7 @@ footer li {
    CUSTOM SCROLLBAR
 ========================================= */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -943,9 +943,35 @@ footer li {
         width: 50px;
         height: 50px;
         font-size: 28px;
-        bottom: 75px;
-        right: 16px;
+        bottom: 85px;
+        right: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    }
+
+    #topBtn {
+        right: 14px;
+        bottom: 145px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-float {
+        width: 48px;
+        height: 48px;
+        font-size: 26px;
+        bottom: 78px;
+        right: 12px;
+    }
+
+    #topBtn {
+        right: 14px;
+        bottom: 140px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
     }
 }
 
@@ -1282,6 +1308,9 @@ img {
     object-fit: cover;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .nav-lang-item .lang-btn span {
