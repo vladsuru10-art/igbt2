@@ -30,6 +30,7 @@
   </head>
 
   <body>
+    <img src="romania.png" class="steag" alt="Steag Romania">
     <!-- Container ascuns pentru Google Translate -->
 <!-- Container ascuns prin poziționare (NU prin display:none) -->
 <div id="google_translate_element" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;"></div>
@@ -50,17 +51,18 @@
         <li><a href="#contact">Contact</a></li>
         
         <!-- SELECTOR LIMBĂ INTEGRAT CURAT ÎN MENIU -->
-<li class="nav-lang-item">
-  <button class="lang-btn active" data-lang="ro" title="Română">
-    <img src="https://flagcdn.com/w40/ro.png" alt="RO" />
-    <span>RO</span>
-  </button>
-  <span class="lang-slash">/</span>
-  <button class="lang-btn" data-lang="en" title="English">
-    <img src="https://flagcdn.com/w40/gb.png" alt="EN" />
-    <span>EN</span>
-  </button>
-</li>
+        <li class="nav-lang-item">
+          <button class="lang-btn active" data-lang="ro" title="Română">
+            <img src="https://flagcdn.com/w40/ro.png" alt="RO" />
+            <span>RO</span>
+          </button>
+          <span class="lang-slash">/</span>
+          <button class="lang-btn" data-lang="en" title="English">
+            <img src="https://flagcdn.com/w40/gb.png" alt="EN" />
+            <span>EN</span>
+          </button>
+        </li>
+      </ul>
     </nav>
 
     <a href="#contact" class="btn-navbar"> Solicită Ofertă </a>
@@ -1106,6 +1108,57 @@
       }
     });
 
+    const hideGoogleTranslateBanner = () => {
+      const selectors = [
+        '.goog-te-banner-frame',
+        '.goog-te-banner-frame.skiptranslate',
+        'iframe.goog-te-banner-frame',
+        'iframe.goog-te-menu-frame',
+        '.goog-tooltip',
+        '.goog-tooltip:hover',
+        '.goog-te-balloon-frame',
+        '.goog-logo-link',
+        '.goog-te-gadget',
+        '#goog-gt-tt',
+        '.skiptranslate',
+        'iframe[src*="translate"]'
+      ];
+
+      selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty('visibility', 'hidden', 'important');
+          el.style.setProperty('opacity', '0', 'important');
+          el.style.setProperty('height', '0', 'important');
+          el.style.setProperty('width', '0', 'important');
+          el.style.setProperty('border', 'none', 'important');
+          el.style.setProperty('margin', '0', 'important');
+          el.style.setProperty('padding', '0', 'important');
+        });
+      });
+
+      const translateElement = document.getElementById('google_translate_element');
+      if (translateElement) {
+        translateElement.style.setProperty('display', 'none', 'important');
+        translateElement.style.setProperty('visibility', 'hidden', 'important');
+        translateElement.style.setProperty('opacity', '0', 'important');
+        translateElement.style.setProperty('position', 'absolute', 'important');
+        translateElement.style.setProperty('top', '-9999px', 'important');
+        translateElement.style.setProperty('left', '-9999px', 'important');
+      }
+
+      document.body.style.top = '0px';
+    };
+
+    const googleTranslateObserver = new MutationObserver(() => {
+      hideGoogleTranslateBanner();
+    });
+
+    googleTranslateObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
     // Ascultă click-urile pe butoane
     langButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -1117,6 +1170,10 @@
         window.location.reload();
       });
     });
+
+    hideGoogleTranslateBanner();
+    window.addEventListener('load', hideGoogleTranslateBanner);
+    setInterval(hideGoogleTranslateBanner, 500);
   });
 </script>
   </body>
