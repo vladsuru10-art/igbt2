@@ -668,7 +668,7 @@ footer li {
    CUSTOM SCROLLBAR
 ========================================= */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -682,6 +682,11 @@ footer li {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #0A58CA;
+}
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: #0D6EFD #eef2f7;
 }
 
 /* ==========================================
@@ -940,19 +945,19 @@ footer li {
 
 @media (max-width: 768px) {
     .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        font-size: 28px;
+        width: 46px;
+        height: 46px;
+        font-size: 26px;
         bottom: 85px;
-        right: 12px;
+        right: 10px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
     }
 
     #topBtn {
-        right: 14px;
-        bottom: 145px;
-        width: 48px;
-        height: 48px;
+        right: 10px;
+        bottom: 140px;
+        width: 46px;
+        height: 46px;
         font-size: 20px;
     }
 }
